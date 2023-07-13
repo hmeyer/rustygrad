@@ -1,6 +1,5 @@
 # rustygrad
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Downloads](https://img.shields.io/crates/d/rustygrad.svg)](#downloads)
 
 
  Minimal Autograd Engine in Rust.
