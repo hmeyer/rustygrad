@@ -22,8 +22,8 @@ impl Dense {
     }
 }
 impl Module for Dense {
-    fn parameters(&self) -> Vec<Value> {
-        self.n.iter().fold(Vec::new(), |mut acc, x| {acc.append(&mut x.parameters()); acc})
+    fn parameters(&mut self) -> Box<dyn Iterator<Item=&mut Value> + '_> {
+        Box::new(self.n.iter_mut().flat_map(|n| n.parameters()))
     }
 }
 

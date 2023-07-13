@@ -3,7 +3,8 @@ use rustygrad::{v, Mlp, Module};
 
 fn main() {
     let mut mlp = Mlp::new(2, &[6, 6, 1]);
-    println!("{} - {} parameters", mlp, mlp.parameters().len());
+    let n_params = mlp.parameters().count();
+    println!("{} - {} parameters", mlp, n_params);
     let xs = [[1.0, 1.0], [1.0, -1.0], [-1.0, 1.0], [-1.0, -1.0]];
     let ys = [-1.0, 1.0, 1.0, -1.0];
 
@@ -24,7 +25,7 @@ fn main() {
         // Compute gradients.
         loss.backward();
         // Apply gradient step.
-        for mut p in mlp.parameters() {
+        for p in mlp.parameters() {
             p.set_data(p.data() + p.grad() * -step_size);
         }
         // Log progress.

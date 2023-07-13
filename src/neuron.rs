@@ -1,5 +1,5 @@
 pub use crate::{Value, v, Module};
-use std::iter::zip;
+use std::iter;
 use std::fmt;
 use rand::prelude::*;
 
@@ -25,7 +25,7 @@ impl Neuron {
     /// Call the Neuron with inputs.
     pub fn call(&self, x: &[Value]) -> Value {
         assert_eq!(self.w.len(), x.len());
-        let r = zip(&self.w, x).fold(v(0.0), |acc, (w, x)| acc + w * x);
+        let r = iter::zip(&self.w, x).fold(v(0.0), |acc, (w, x)| acc + w * x);
         if self.activation {
             r.relu()
         } else {
@@ -35,10 +35,10 @@ impl Neuron {
 }
 
 impl Module for Neuron {
-    fn parameters(&self) -> Vec<Value> {
-        let mut p = self.w.clone();
-        p.push(self.b.clone());
-        p
+    fn parameters(&mut self) -> Box<dyn Iterator<Item=&mut Value> + '_> {
+        let w = self.w.iter_mut();
+        let w_and_b = w.chain(iter::once(&mut self.b)); 
+        Box::new(w_and_b)
     }
 }
 

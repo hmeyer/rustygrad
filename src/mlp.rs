@@ -30,8 +30,8 @@ impl Mlp {
 }
 
 impl Module for Mlp {
-   fn parameters(&self) -> Vec<Value> {
-        self.l.iter().fold(Vec::new(), |mut acc, x| {acc.append(&mut x.parameters()); acc})
+    fn parameters(&mut self) -> Box<dyn Iterator<Item=&mut Value> + '_> {
+        Box::new(self.l.iter_mut().flat_map(|l| l.parameters()))
     }
 }
 
